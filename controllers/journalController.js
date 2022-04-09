@@ -1,8 +1,7 @@
 const express = require('express');
 
 const UserData = require('../models/UserData.js');
-// const UserAccount = require('../models/UserAccount.js');
-// const CommunityData = require('../models/CommunityData.js');
+
 const router = express.Router();
 
 router.get('/seedjournal', async (req, res) => {
