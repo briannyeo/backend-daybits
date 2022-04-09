@@ -9,13 +9,13 @@ const userDataSchema = mongoose.Schema({
 	startDate: { type: Date, required: true },
 	targetPerDay: { type: String, required: true },
 	daysSucceeded: [{ type: Boolean }],
-	journalTitle: { type: String, required: true },
-	journalEntry: { type: String, required: true },
+	title: { type: String, required: true },
+	body: { type: String, required: true },
 	journalDate: { type: Date, required: true },
 
 	//journalLikes: { type: Schema.Types.ObjectId, ref: 'UserAccount' },
 });
-
+//journalEntry:  [{title: 1, body: 1}, {title : 2, body:2}]
 const UserData = mongoose.model('UserData', userDataSchema);
 
 module.exports = UserData;
