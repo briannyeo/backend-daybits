@@ -34,16 +34,26 @@ router.get('/', (req, res) => {
 		});
 });
 
-//* Create Route - this posts the data onto the /api/holidays page
-// router.post('/', async (req, res) => {
-// 	try {
-// 		console.log(req.body);
-// 		const createdHoliday = await Holiday.create(req.body);
-// 		res.status(200).send(createdHoliday);
-// 	} catch (error) {
-// 		res.status(400).json({ error: error.message });
-// 	}
+// router.get('/', (req, res) => {
+// 	UserData.find()
+// 		.then((journalEntry) => {
+// 			res.json(journalEntry);
+// 		})
+// 		.catch((err) => {
+// 			res.json(err);
+// 		});
 // });
+
+//* Create Route - this posts the data onto the /api/holidays page
+router.post('/', async (req, res) => {
+	try {
+		console.log(req.body);
+		const createdJournal = await UserData.create(req.body);
+		res.status(200).send(createdJournal);
+	} catch (error) {
+		res.status(400).json({ error: error.message });
+	}
+});
 
 //* Delete Route - DOESNT WORK
 // router.delete('/:id', async (req, res) => {

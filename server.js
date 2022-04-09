@@ -26,7 +26,7 @@ mongoose.connection.once('open', () => {
 //MIDDLEWARE
 app.use(cors());
 app.use(express.json());
-app.use('/journal', journalController);
+app.use('/daybits', journalController);
 
 app.get('/', (req, res) => {
 	res.send('Hi 2');
