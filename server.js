@@ -3,6 +3,7 @@ const express = require('express');
 const cors = require('cors');
 const mongoose = require('mongoose');
 const journalController = require('./controllers/journalController');
+const userController = require('./controllers/UsersController');
 
 const app = express();
 const PORT = process.env.PORT; // 2000;
@@ -26,7 +27,8 @@ mongoose.connection.once('open', () => {
 //MIDDLEWARE
 app.use(cors());
 app.use(express.json());
-app.use('/daybits', journalController);
+app.use('/daybits/journal', journalController);
+app.use('/daybits/register', userController);
 
 app.get('/', (req, res) => {
 	res.send('Hi 2');
