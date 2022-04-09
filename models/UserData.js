@@ -2,16 +2,15 @@ const mongoose = require('mongoose');
 const { Schema } = mongoose;
 
 const userDataSchema = mongoose.Schema({
-	_id: Schema.Types.ObjectId,
 	user: { type: Schema.Types.ObjectId, ref: 'UserAccount' },
-	habit: { type: String, required: true },
-	goal: { type: String, required: true },
-	startDate: { type: Date, required: true },
-	targetPerDay: { type: String, required: true },
+	habit: { type: String },
+	goal: { type: String },
+	startDate: { type: Date },
+	targetPerDay: { type: String },
 	daysSucceeded: [{ type: Boolean }],
-	title: { type: String, required: true },
-	body: { type: String, required: true },
-	journalDate: { type: Date, required: true },
+	title: { type: String },
+	body: { type: String },
+	journalDate: { type: Date },
 
 	//journalLikes: { type: Schema.Types.ObjectId, ref: 'UserAccount' },
 });
