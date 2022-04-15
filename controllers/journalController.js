@@ -1,6 +1,7 @@
 const express = require('express');
 
 const UserData = require('../models/UserData.js');
+const CommunityData = require('../models/CommunityData.js');
 
 const router = express.Router();
 
@@ -22,7 +23,7 @@ router.get('/seedjournal', async (req, res) => {
 	res.json(journal);
 });
 
-//* Index Route - this gets the data from the form
+//* Index Route - get data from UserData model
 router.get('/', (req, res) => {
 	UserData.find()
 		.then((journalEntry) => {
@@ -33,15 +34,16 @@ router.get('/', (req, res) => {
 		});
 });
 
-// router.get('/', (req, res) => {
-// 	UserData.find()
-// 		.then((journalEntry) => {
-// 			res.json(journalEntry);
-// 		})
-// 		.catch((err) => {
-// 			res.json(err);
-// 		});
-// });
+//* Index Route - get data from Community Data model
+router.get('/community', (req, res) => {
+	CommunityData.find()
+		.then((journalList) => {
+			res.json(journalList);
+		})
+		.catch((err) => {
+			res.json(err);
+		});
+});
 
 //* Create Route - this posts the data onto the /api/holidays page
 router.post('/', async (req, res) => {
@@ -54,21 +56,20 @@ router.post('/', async (req, res) => {
 	}
 });
 
-//* Delete Route - DOESNT WORK
-// router.delete('/:id', async (req, res) => {
-// 	try {
-// 		console.log('deleting');
-// 		const deletedHoliday = await Holiday.findByIdAndRemove(req.params.id);
-// 		res.status(200).send(deletedHoliday);
-// 	} catch (error) {
-// 		res.status(400).json({ error: error.message });
-// 	}
-// });
+//* Delete Route
+router.delete('/:id', async (req, res) => {
+	try {
+		const deletedJournal = await UserData.findByIdAndRemove(req.params.id);
+		res.status(200).send(deletedJournal);
+	} catch (error) {
+		res.status(400).json({ error: error.message });
+	}
+});
 
-//*Put route
-// router.put('/:id', async (req, res) => {
-// 	await Holiday.findByIdAndUpdate(req.params.id, req.body);
-// 	res.json({ message: 'Holiday Updated' });
-// });
+//*Put route - EDIT (LIKES / COMMENTS) - DOES NOT WORK YET
+router.put('/:id', async (req, res) => {
+	await UserData.findByIdAndUpdate(req.params.id, req.body);
+	res.json({ message: 'journal likes Updated' });
+});
 
 module.exports = router;
