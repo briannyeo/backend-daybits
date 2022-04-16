@@ -2,6 +2,7 @@ const bcrypt = require('bcrypt');
 const express = require('express');
 const users = express.Router();
 const UserAccount = require('../models/UserAccount.js');
+const UserData = require('../models/UserData.js');
 
 //Seed Accounts
 const saltRounds = 10;
@@ -48,6 +49,30 @@ users.post('/', async (req, res) => {
 		res.redirect('/');
 	} catch (error) {
 		console.log(error);
+	}
+});
+
+//get data from frontend - profile
+users.get('/profile', (req, res) => {
+	UserData.find()
+		.sort({ _id: -1 })
+		.limit(1) //find most recent addition
+		.then((userInfo) => {
+			res.json(userInfo);
+		})
+		.catch((err) => {
+			res.json(err);
+		});
+});
+
+//create - profile
+users.post('/profile', async (req, res) => {
+	//req.session.user = user.username;
+	try {
+		const createdProfile = await UserData.create(req.body);
+		res.status(200).send(createdProfile);
+	} catch (error) {
+		res.status(400).json({ error: error.message });
 	}
 });
 

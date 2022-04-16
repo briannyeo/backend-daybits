@@ -4,9 +4,10 @@ const { Schema } = mongoose;
 const userDataSchema = mongoose.Schema({
 	user: { type: Schema.Types.ObjectId, ref: 'UserAccount' },
 	habit: { type: String },
+	habitstatus: { type: String },
 	goal: { type: String },
+	target: { type: String },
 	startDate: { type: Date },
-	targetPerDay: { type: String },
 	daysSucceeded: { type: Number },
 	dailygoal: { type: Boolean },
 	title: [{ type: String }],
