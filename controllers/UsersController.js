@@ -68,14 +68,15 @@ users.post('/home', async (req, res) => {
 	const user = await UserAccount.findOne({ username });
 
 	if (!user) {
-		res.send('User not found');
+		res.json({ status: 'error' });
 	} else if (bcrypt.compareSync(password, user.password)) {
-		req.session.user = user;
+		req.session.user = user.username;
+		console.log(req.session);
 		//req.session.count = 1;
-		res.send('Ok');
+		res.json({ status: 'success' });
 		console.log('Successfully authenticated');
 	} else {
-		res.send('No');
+		res.json({ status: 'failed' });
 	}
 	// res.send(user);
 	//* success or failure

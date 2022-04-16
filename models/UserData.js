@@ -12,6 +12,7 @@ const userDataSchema = mongoose.Schema({
 	title: [{ type: String }],
 	body: [{ type: String }],
 	journalDate: [{ type: Date }],
+	likes: [{ type: String }],
 
 	//journalLikes: { type: Schema.Types.ObjectId, ref: 'UserAccount' },
 });

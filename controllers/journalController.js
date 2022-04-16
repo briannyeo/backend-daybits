@@ -47,8 +47,9 @@ router.get('/community', (req, res) => {
 
 //* Create Route - this posts the data onto the /api/holidays page
 router.post('/', async (req, res) => {
+	//req.session.user = user.username;
 	try {
-		console.log(req.body);
+		console.log(req.session.user);
 		const createdJournal = await UserData.create(req.body);
 		res.status(200).send(createdJournal);
 	} catch (error) {
@@ -70,6 +71,20 @@ router.delete('/:id', async (req, res) => {
 router.put('/:id', async (req, res) => {
 	await UserData.findByIdAndUpdate(req.params.id, req.body);
 	res.json({ message: 'journal likes Updated' });
+});
+
+//TRYING POPULATE
+router.post('/test', async (req, res) => {
+	try {
+		UserData.findOne({ title: 'grdg' })
+			.populate('community')
+			.exec(function (err, UserData) {
+				UserData.community.likes = 2;
+			});
+	} catch (error) {
+		console.log(error);
+	}
+	res.send('success');
 });
 
 module.exports = router;
