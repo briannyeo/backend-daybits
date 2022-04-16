@@ -1,7 +1,6 @@
 const express = require('express');
 
 const UserData = require('../models/UserData.js');
-const CommunityData = require('../models/CommunityData.js');
 
 const router = express.Router();
 
@@ -34,18 +33,7 @@ router.get('/', (req, res) => {
 		});
 });
 
-//* Index Route - get data from Community Data model
-router.get('/community', (req, res) => {
-	CommunityData.find()
-		.then((journalList) => {
-			res.json(journalList);
-		})
-		.catch((err) => {
-			res.json(err);
-		});
-});
-
-//* Create Route - this posts the data onto the /api/holidays page
+//* Create Route - this posts the data onto the /journal page
 router.post('/', async (req, res) => {
 	//req.session.user = user.username;
 	try {
