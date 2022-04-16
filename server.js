@@ -33,6 +33,14 @@ app.use(
 		saveUninitialized: false, // default  more info: https://www.npmjs.com/package/express-session#resave
 	})
 );
+// server.js cors settings
+app.use(
+	cors({
+		credentials: true,
+		origin: true,
+		methods: 'GET,HEAD,PUT,PATCH,POST,DELETE',
+	})
+);
 app.use(cors());
 app.use(express.json());
 app.use('/daybits/journal', journalController);
