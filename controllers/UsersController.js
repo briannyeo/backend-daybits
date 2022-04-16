@@ -70,7 +70,8 @@ users.post('/home', async (req, res) => {
 	if (!user) {
 		res.json({ status: 'error' });
 	} else if (bcrypt.compareSync(password, user.password)) {
-		req.session.user = user;
+		req.session.user = user.username;
+		console.log(req.session);
 		//req.session.count = 1;
 		res.json({ status: 'success' });
 		console.log('Successfully authenticated');

@@ -47,8 +47,9 @@ router.get('/community', (req, res) => {
 
 //* Create Route - this posts the data onto the /api/holidays page
 router.post('/', async (req, res) => {
+	//req.session.user = user.username;
 	try {
-		console.log(req.body);
+		console.log(req.session.user);
 		const createdJournal = await UserData.create(req.body);
 		res.status(200).send(createdJournal);
 	} catch (error) {
