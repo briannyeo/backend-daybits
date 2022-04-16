@@ -5,6 +5,7 @@ const cors = require('cors');
 const mongoose = require('mongoose');
 const journalController = require('./controllers/journalController');
 const usersController = require('./controllers/UsersController');
+//const userDataController = require('./controllers/UserDataController');
 const session = require('express-session');
 
 const app = express();
