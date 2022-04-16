@@ -72,4 +72,18 @@ router.put('/:id', async (req, res) => {
 	res.json({ message: 'journal likes Updated' });
 });
 
+//TRYING POPULATE
+router.post('/test', async (req, res) => {
+	try {
+		UserData.findOne({ title: 'grdg' })
+			.populate('community')
+			.exec(function (err, UserData) {
+				UserData.community.likes = 2;
+			});
+	} catch (error) {
+		console.log(error);
+	}
+	res.send('success');
+});
+
 module.exports = router;
