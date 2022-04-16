@@ -26,19 +26,35 @@ mongoose.connection.once('open', () => {
 });
 
 //****************MIDDLEWARES***************//
+app.set('trust proxy', 1); // add this line
 app.use(
 	session({
-		secret: process.env.SECRET, //a random string do not copy this value or your stuff will get hacked
-		cookie: { httpOnly: false },
-		resave: false, // default more info: https://www.npmjs.com/package/express-session#resave
-		saveUninitialized: false, // default  more info: https://www.npmjs.com/package/express-session#resave
+		secret: process.env.SECRET,
+		resave: false,
+		saveUninitialized: false,
+		// add the cookie stuff below
+		cookie: {
+			sameSite: process.env.NODE_ENV === 'production' ? 'none' : 'lax',
+			secure: process.env.NODE_ENV === 'production',
+		},
 	})
 );
+// app.use(
+// 	session({
+// 		secret: process.env.SECRET, //a random string do not copy this value or your stuff will get hacked
+// 		cookie: { httpOnly: false },
+// 		resave: false, // default more info: https://www.npmjs.com/package/express-session#resave
+// 		saveUninitialized: false, // default  more info: https://www.npmjs.com/package/express-session#resave
+// 	})
+// );
 // server.js cors settings
 app.use(
 	cors({
 		credentials: true,
-		origin: true,
+		origin: [
+			'http://localhost:3000',
+			'https://daybits-frontend.vercel.app/daybits',
+		],
 		methods: 'GET,HEAD,PUT,PATCH,POST,DELETE',
 	})
 );
