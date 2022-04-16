@@ -7,10 +7,11 @@ const userDataSchema = mongoose.Schema({
 	goal: { type: String },
 	startDate: { type: Date },
 	targetPerDay: { type: String },
-	daysSucceeded: [{ type: Boolean }],
-	title: { type: String },
-	body: { type: String },
-	journalDate: { type: Date },
+	daysSucceeded: { type: Number },
+	dailygoal: { type: Boolean },
+	title: [{ type: String }],
+	body: [{ type: String }],
+	journalDate: [{ type: Date }],
 
 	//journalLikes: { type: Schema.Types.ObjectId, ref: 'UserAccount' },
 });
