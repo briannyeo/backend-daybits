@@ -59,6 +59,8 @@ app.use(
 	})
 );
 app.use(express.json());
+
+//****************ROUTES***************//
 app.use('/daybits/journal', journalController);
 app.use('/daybits/register', usersController);
 

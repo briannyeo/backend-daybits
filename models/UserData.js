@@ -2,18 +2,14 @@ const mongoose = require('mongoose');
 const { Schema } = mongoose;
 
 const userDataSchema = mongoose.Schema({
-	user: { type: Schema.Types.ObjectId, ref: 'UserLogin' },
-	habit: { type: String },
-	habitstatus: { type: String },
-	goal: { type: String },
-	target: { type: String },
-	startDate: { type: Date },
-	daysSucceeded: { type: Number },
-	dailygoal: { type: Boolean },
-	title: [{ type: String }],
-	body: [{ type: String }],
-	journalDate: [{ type: Date }],
-	likes: [{ type: String }],
+	username: { type: Schema.Types.ObjectId, ref: 'UserLogin' }, //username
+	password: {},
+	habit: { type: String }, //type of habit
+	habitstatus: { type: String }, //break or build
+	goal: { type: String }, //e.g. run a marathon
+	target: { type: String }, //30 mins a day
+	startDate: { type: Date }, //date to start
+	daysSucceeded: { type: Number }, // x out of 30days
 
 	//journalLikes: { type: Schema.Types.ObjectId, ref: 'UserLogin' },
 });
