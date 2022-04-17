@@ -1,7 +1,7 @@
 const bcrypt = require('bcrypt');
 const express = require('express');
 const users = express.Router();
-const UserData = require('../models UserData.js');
+const UserData = require('../models/UserData.js');
 
 //Seed Accounts
 const saltRounds = 10;
