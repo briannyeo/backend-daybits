@@ -1,15 +1,14 @@
 const bcrypt = require('bcrypt');
 const express = require('express');
 const users = express.Router();
-const UserLogin = require('../models/UserLogin.js');
-const UserData = require('../models/UserData.js');
+const UserData = require('../models UserData.js');
 
 //Seed Accounts
 const saltRounds = 10;
 users.get('/seedaccount', async (req, res) => {
 	try {
-		await UserLogin.deleteMany({});
-		await UserLogin.create([
+		await UserData.deleteMany({});
+		await UserData.create([
 			{
 				username: 'simon',
 				password: bcrypt.hashSync('12345', saltRounds),
@@ -27,7 +26,7 @@ users.get('/seedaccount', async (req, res) => {
 
 //Index route. Getting the data from the front-end when user registers.
 users.get('/', (req, res) => {
-	UserLogin.find()
+	UserData.find()
 		.then((userInfo) => {
 			res.json(userInfo);
 		})
@@ -44,7 +43,7 @@ users.post('/', async (req, res) => {
 		bcrypt.genSaltSync(10)
 	);
 	try {
-		const createdUser = await UserLogin.create(req.body);
+		const createdUser = await UserData.create(req.body);
 		console.log('created user is: ', createdUser);
 		res.redirect('/');
 	} catch (error) {
@@ -90,7 +89,7 @@ users.get('/progress', (req, res) => {
 users.post('/home', async (req, res) => {
 	const { username, password } = req.body;
 	// const hashPassword = bcrypt.hashSync(password, saltRounds);
-	const user = await UserLogin.findOne({ username });
+	const user = await UserData.findOne({ username });
 
 	if (!user) {
 		res.json({ status: 'error' });

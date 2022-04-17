@@ -9,8 +9,8 @@ const journalEntrySchema = mongoose.Schema({
 	dailyGoalAchived: { type: Boolean },
 	createdAt: { type: Date },
 	comments: [Comments],
-	author: { type: Schema.Types.ObjectId, ref: 'UserLogin', required: true },
-	likes: [{ type: Schema.Types.ObjectId, ref: 'UserLogin', required: true }],
+	author: { type: Schema.Types.ObjectId, ref: 'UserData', required: true },
+	likes: [{ type: Schema.Types.ObjectId, ref: 'UserData', required: true }],
 	totalLikes: { type: Number, default: 0 },
 });
 
