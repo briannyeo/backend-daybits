@@ -1,11 +1,11 @@
 const mongoose = require('mongoose');
 
-const userAccountSchema = mongoose.Schema({
+const userLoginSchema = mongoose.Schema({
 	//_id: Schema.Types.ObjectId,
 	username: { type: 'string' },
 	password: { type: 'string' },
 });
 
-const UserAccount = mongoose.model('UserAccount', userAccountSchema);
+const UserLogin = mongoose.model('UserLogin', userLoginSchema);
 
-module.exports = UserAccount;
+module.exports = UserLogin;

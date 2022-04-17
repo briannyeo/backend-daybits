@@ -2,7 +2,7 @@ const mongoose = require('mongoose');
 const { Schema } = mongoose;
 
 const userDataSchema = mongoose.Schema({
-	user: { type: Schema.Types.ObjectId, ref: 'UserAccount' },
+	user: { type: Schema.Types.ObjectId, ref: 'UserLogin' },
 	habit: { type: String },
 	habitstatus: { type: String },
 	goal: { type: String },
@@ -15,7 +15,7 @@ const userDataSchema = mongoose.Schema({
 	journalDate: [{ type: Date }],
 	likes: [{ type: String }],
 
-	//journalLikes: { type: Schema.Types.ObjectId, ref: 'UserAccount' },
+	//journalLikes: { type: Schema.Types.ObjectId, ref: 'UserLogin' },
 });
 //journalEntry:  [{title: 1, body: 1}, {title : 2, body:2}]
 const UserData = mongoose.model('UserData', userDataSchema);
