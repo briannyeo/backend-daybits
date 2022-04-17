@@ -52,7 +52,7 @@ users.post('/', async (req, res) => {
 	}
 });
 
-//get data from frontend - profile
+//get data from frontend - profile - FIND AND UPDATE (ADD EDIT ROUTE)
 users.get('/profile', (req, res) => {
 	UserData.find()
 		.sort({ _id: -1 })
@@ -67,7 +67,6 @@ users.get('/profile', (req, res) => {
 
 //create - profile
 users.post('/profile', async (req, res) => {
-	//req.session.user = user.username;
 	try {
 		const createdProfile = await UserData.create(req.body);
 		res.status(200).send(createdProfile);
@@ -96,8 +95,10 @@ users.post('/home', async (req, res) => {
 		res.json({ status: 'error' });
 	} else if (bcrypt.compareSync(password, user.password)) {
 		req.session.user = user.username;
+		req.session.userId = user._id;
 		console.log(req.session);
 		//req.session.count = 1;
+		//user: req.session.user
 		res.json({ status: 'success' });
 		console.log('Successfully authenticated');
 	} else {
@@ -109,7 +110,7 @@ users.post('/home', async (req, res) => {
 
 users.post('/logout', (req, res) => {
 	req.session.destroy();
-	res.send('logout');
+	res.json({ status: 'success' });
 });
 
 module.exports = users;
