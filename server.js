@@ -3,8 +3,8 @@ require('dotenv').config();
 const express = require('express');
 const cors = require('cors');
 const mongoose = require('mongoose');
-const journalController = require('./controllers/journalController');
-const usersController = require('./controllers/UsersController');
+const journalController = require('./controllers/journalController.js');
+const usersController = require('./controllers/UsersController.js');
 //const userDataController = require('./controllers/UserDataController');
 const session = require('express-session');
 

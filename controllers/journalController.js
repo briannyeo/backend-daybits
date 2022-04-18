@@ -1,6 +1,6 @@
 const express = require('express');
 
-const UserData = require('../models/UserData.js');
+const JournalEntry = require('../models/JournalEntry.js');
 
 const router = express.Router();
 
@@ -22,9 +22,9 @@ router.get('/seedjournal', async (req, res) => {
 	res.json(journal);
 });
 
-//* Index Route - get data from UserData model
+//* Index Route - get data from JournalEntry model
 router.get('/', (req, res) => {
-	UserData.find()
+	JournalEntry.find()
 		.then((journalEntry) => {
 			res.json(journalEntry);
 		})
@@ -37,8 +37,8 @@ router.get('/', (req, res) => {
 router.post('/', async (req, res) => {
 	//req.session.user = user.username;
 	try {
-		console.log(req.session.user);
-		const createdJournal = await UserData.create(req.body);
+		console.log('from journalcontroller', req.body);
+		const createdJournal = await JournalEntry.create(req.body);
 		res.status(200).send(createdJournal);
 	} catch (error) {
 		res.status(400).json({ error: error.message });
@@ -48,7 +48,7 @@ router.post('/', async (req, res) => {
 //* Delete Route
 router.delete('/:id', async (req, res) => {
 	try {
-		const deletedJournal = await UserData.findByIdAndRemove(req.params.id);
+		const deletedJournal = await JournalEntry.findByIdAndRemove(req.params.id);
 		res.status(200).send(deletedJournal);
 	} catch (error) {
 		res.status(400).json({ error: error.message });
@@ -56,23 +56,23 @@ router.delete('/:id', async (req, res) => {
 });
 
 //*Put route - EDIT (LIKES / COMMENTS) - DOES NOT WORK YET
-router.put('/:id', async (req, res) => {
-	await UserData.findByIdAndUpdate(req.params.id, req.body);
-	res.json({ message: 'journal likes Updated' });
-});
+// router.put('/:id', async (req, res) => {
+// 	await UserData.findByIdAndUpdate(req.params.id, req.body);
+// 	res.json({ message: 'journal likes Updated' });
+// });
 
 //TRYING POPULATE
-router.post('/test', async (req, res) => {
-	try {
-		UserData.findOne({ title: 'grdg' })
-			.populate('community')
-			.exec(function (err, UserData) {
-				UserData.community.likes = 2;
-			});
-	} catch (error) {
-		console.log(error);
-	}
-	res.send('success');
-});
+// router.post('/test', async (req, res) => {
+// 	try {
+// 		UserData.findOne({ title: 'grdg' })
+// 			.populate('community')
+// 			.exec(function (err, UserData) {
+// 				UserData.community.likes = 2;
+// 			});
+// 	} catch (error) {
+// 		console.log(error);
+// 	}
+// 	res.send('success');
+// });
 
 module.exports = router;

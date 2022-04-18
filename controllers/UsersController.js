@@ -68,6 +68,7 @@ users.get('/profile', (req, res) => {
 users.post('/profile', async (req, res) => {
 	try {
 		const createdProfile = await UserData.create(req.body);
+		console.log(req.session.user);
 		res.status(200).send(createdProfile);
 	} catch (error) {
 		res.status(400).json({ error: error.message });
