@@ -7,9 +7,8 @@ const journalEntrySchema = mongoose.Schema({
 	dailyGoalAchived: { type: Boolean },
 	createdAt: { type: Date },
 	//comments: [Comments],
-	author: { type: Schema.Types.ObjectId, ref: 'UserData' },
-	likes: [{ type: Schema.Types.ObjectId, ref: 'UserData' }],
-	totalLikes: { type: Number, default: 0 },
+	// likes: [{ type: Schema.Types.ObjectId, ref: 'UserData' }],
+	comments: [{ type: Schema.Types.ObjectId, ref: 'Comments' }],
 });
 
 const JournalEntry = mongoose.model('JournalEntry', journalEntrySchema);

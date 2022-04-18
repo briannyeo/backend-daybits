@@ -67,7 +67,7 @@ users.post('/', async (req, res) => {
 //Find if userId user has habits created already or is a new user (no habits). Return accordingly.
 
 users.get('/profile', async (req, res) => {
-	console.log('get route user', req.session.user);
+	//console.log('get route user', req.session.user);
 
 	UserData.findOne({ username: req.session.user })
 		.then((docs) => {
@@ -80,7 +80,7 @@ users.get('/profile', async (req, res) => {
 
 //To create a profile (habit, habitstatus, goal, target) if NONE EXISTS
 users.post('/profile', async (req, res) => {
-	console.log('from profile POST', req.session.user);
+	//console.log('from profile POST', req.session.user);
 	const filter = { username: req.session.user };
 	const update = req.body;
 
@@ -119,8 +119,6 @@ users.post('/home', async (req, res) => {
 
 		res.json({
 			status: 'success',
-			userId: req.session.userId,
-			user: req.session.user,
 		});
 
 		console.log('Successfully authenticated');
