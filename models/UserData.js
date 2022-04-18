@@ -1,7 +1,7 @@
 const mongoose = require('mongoose');
 
 const userDataSchema = mongoose.Schema({
-	username: { type: String, unique: true },
+	username: { type: String },
 	password: { type: String },
 	habit: { type: String }, //type of habit
 	habitstatus: { type: String }, //break or build
