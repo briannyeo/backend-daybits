@@ -31,7 +31,7 @@ app.use(
 	session({
 		secret: process.env.SECRET,
 		resave: false,
-		saveUninitialized: false,
+		saveUninitialized: true, //changed this to true
 		// add the cookie stuff below
 		cookie: {
 			sameSite: process.env.NODE_ENV === 'production' ? 'none' : 'lax',

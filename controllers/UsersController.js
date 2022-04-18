@@ -24,7 +24,7 @@ users.get('/seedaccount', async (req, res) => {
 	}
 });
 
-//Index route. Getting the data from the front-end when user registers.
+//Index route. Receiving the data from the front-end when user registers.
 users.get('/', (req, res) => {
 	UserData.find()
 		.then((userInfo) => {
@@ -52,40 +52,59 @@ users.post('/', async (req, res) => {
 });
 
 //get data from frontend - profile - FIND AND UPDATE (ADD EDIT ROUTE)
-users.get('/profile', (req, res) => {
-	UserData.find()
-		.sort({ _id: -1 })
-		.limit(1) //find most recent addition
-		.then((userInfo) => {
-			res.json(userInfo);
+// users.get('/profile', (req, res) => {
+// 	UserData.find()
+// 		.sort({ _id: -1 })
+// 		.limit(1) //find most recent addition
+// 		.then((userInfo) => {
+// 			res.json(userInfo);
+// 		})
+// 		.catch((err) => {
+// 			res.json(err);
+// 		});
+// });
+
+//Find if userId user has habits created already or is a new user (no habits). Return accordingly.
+
+users.get('/profile', async (req, res) => {
+	//console.log('get route user', req.session.user);
+
+	UserData.findOne({ username: req.session.user })
+		.then((docs) => {
+			res.json(docs);
 		})
 		.catch((err) => {
 			res.json(err);
 		});
 });
 
-//create - profile
+//To create a profile (habit, habitstatus, goal, target) if NONE EXISTS
 users.post('/profile', async (req, res) => {
+	//console.log('from profile POST', req.session.user);
+	const filter = { username: req.session.user };
+	const update = req.body;
+
 	try {
-		const createdProfile = await UserData.create(req.body);
-		console.log(req.session.user);
+		const createdProfile = await UserData.findOneAndUpdate(filter, update);
 		res.status(200).send(createdProfile);
 	} catch (error) {
 		res.status(400).json({ error: error.message });
 	}
 });
 
+//To EDIT a profile (habit, habitstatus, goal, target)
+
 //SESSIONS
-users.get('/progress', (req, res) => {
-	const user = req.session.user;
+// users.get('/progress', (req, res) => {
+// 	const user = req.session.user;
+// 	if (user) {
+// 		res.send(user);
+// 	} else {
+// 		res.send('no entry');
+// 	}
+// });
 
-	if (user) {
-		res.send(user);
-	} else {
-		res.send('no entry');
-	}
-});
-
+//Autheticating to see if can login
 users.post('/home', async (req, res) => {
 	const { username, password } = req.body;
 	// const hashPassword = bcrypt.hashSync(password, saltRounds);
@@ -96,10 +115,12 @@ users.post('/home', async (req, res) => {
 	} else if (bcrypt.compareSync(password, user.password)) {
 		req.session.user = user.username;
 		req.session.userId = user._id;
-		console.log(req.session);
-		//req.session.count = 1;
-		//user: req.session.user
-		res.json({ status: 'success' });
+		console.log('from home', req.session);
+
+		res.json({
+			status: 'success',
+		});
+
 		console.log('Successfully authenticated');
 	} else {
 		res.json({ status: 'failed' });

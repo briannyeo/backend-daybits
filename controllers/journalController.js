@@ -1,6 +1,7 @@
 const express = require('express');
 
 const JournalEntry = require('../models/JournalEntry.js');
+const UserData = require('../models/UserData.js');
 
 const router = express.Router();
 
@@ -24,7 +25,20 @@ router.get('/seedjournal', async (req, res) => {
 
 //* Index Route - get data from JournalEntry model
 router.get('/', (req, res) => {
-	JournalEntry.find()
+	// console.log('journal GET route', req.session.user);
+
+	// JournalEntry.findOne({ _id: req.session.id })
+	// 	.populate('author', 'username')
+	// 	.exec(function (err, journal) {
+	// 		if (err) {
+	// 			return err;
+	// 		}
+	// 		console.log('the user is', journal.author.username);
+	// 	});
+
+	UserData.find()
+		.populate('journals')
+		.select('-password')
 		.then((journalEntry) => {
 			res.json(journalEntry);
 		})
@@ -33,16 +47,39 @@ router.get('/', (req, res) => {
 		});
 });
 
-//* Create Route - this posts the data onto the /journal page
+//* Create Route - this posts the data onto the journalEntry database
 router.post('/', async (req, res) => {
 	//req.session.user = user.username;
+	//console.log('journal POST route', req.session.id);
+	console.log('body', req.body);
+	const filter = { username: req.session.user };
+	const newEntry = req.body;
+
 	try {
-		console.log('from journalcontroller', req.body);
-		const createdJournal = await JournalEntry.create(req.body);
-		res.status(200).send(createdJournal);
+		// const createdJournal = await UserData.findOneAndUpdate(filter, {
+		// 	$push: { journals: [newEntry] },
+		// });
+
+		const currentUser = await UserData.findOne(filter);
+
+		const newJournalEntry = new JournalEntry(newEntry);
+		newJournalEntry.save();
+
+		currentUser.journals.push(newJournalEntry);
+		currentUser.save();
+
+		res.status(200).send('success');
 	} catch (error) {
 		res.status(400).json({ error: error.message });
 	}
+
+	// ORIGINAL CODE
+	//try {
+	// 	const createdJournal = await JournalEntry.create(req.body);
+	// 	res.status(200).send(createdJournal);
+	// } catch (error) {
+	// 	res.status(400).json({ error: error.message });
+	// }
 });
 
 //* Delete Route
