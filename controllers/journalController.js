@@ -1,7 +1,9 @@
 const express = require('express');
+const mongoose = require('mongoose');
 
 const JournalEntry = require('../models/JournalEntry.js');
 const UserData = require('../models/UserData.js');
+const ObjectId = mongoose.Types.ObjectId;
 
 const router = express.Router();
 
@@ -38,9 +40,6 @@ router.get('/', (req, res) => {
 
 //* Create Route - this posts the data onto the journalEntry database
 router.post('/', async (req, res) => {
-	//req.session.user = user.username;
-	//console.log('journal POST route', req.session.id);
-	console.log('body', req.body);
 	const filter = { username: req.session.user };
 	const newEntry = req.body;
 
@@ -74,23 +73,48 @@ router.post('/', async (req, res) => {
 //* Delete Route
 router.delete('/:id', async (req, res) => {
 	//delete route needs to delete thorugh populate
-	// UserData.findOne({ username: req.session.user })
-	// 	.populate('journals')
-	// 	.select('-password')
-	// 	.then((profile) => {
-	// 		res.json(profile);
-	// 	})
-	// 	.catch((err) => {
-	// 		res.json(err);
-	// 	});
+
+	// 	const filter = { username: req.session.user };
+	// 	const newEntry = req.body;
+
+	// try {
+
+	// 	const currentUser = await UserData.findOne(filter);
+
+	// 	const currentEntry = await JournalEntry.findById(req.params.id);
+
+	// 	//const newJournalEntry = new JournalEntry(newEntry);
+	// 	newJournalEntry.save();
+
+	// 	currentUser.journals.push(newJournalEntry);
+	// 	currentUser.save();
+
+	// 	res.status(200).send('success');
+	// } catch (error) {
+	// 	res.status(400).json({ error: error.message });
+	// }
+	//journals: { _id: req.params.id },
+
+	console.log(req.params.id);
+	console.log('user', req.session.user);
+	const deletedDAta = await UserData.updateOne(
+		{ username: req.session.user },
+		{
+			$pull: {
+				journals: ObjectId(req.params.id),
+			},
+		}
+	).exec();
+	console.log(deletedDAta);
+	res.status(200).json({ status: 'success' });
 
 	//ORIGINAL CODE
-	try {
-		const deletedJournal = await JournalEntry.findByIdAndRemove(req.params.id);
-		res.status(200).send(deletedJournal);
-	} catch (error) {
-		res.status(400).json({ error: error.message });
-	}
+	// try {
+	// 	const deletedJournal = await JournalEntry.findByIdAndRemove(req.params.id);
+	// 	res.status(200).send(deletedJournal);
+	// } catch (error) {
+	// 	res.status(400).json({ error: error.message });
+	// }
 });
 
 //*Put route - EDIT (LIKES / COMMENTS) - DOES NOT WORK YET
