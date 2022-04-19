@@ -40,7 +40,7 @@ router.get('/', (req, res) => {
 
 //* Create Route - this posts the data onto the journalEntry database
 router.post('/', async (req, res) => {
-	const filter = { username: 'Mike' };
+	const filter = { username: req.session.user };
 	const newEntry = req.body;
 
 	try {
@@ -72,11 +72,8 @@ router.post('/', async (req, res) => {
 
 //* Delete Route
 router.delete('/:id', async (req, res) => {
-	//delete route needs to delete thorugh populate
-
 	const filter = { username: req.session.user };
 	try {
-		console.log(req.params.id);
 		//first remove from the userData collection
 		await UserData.updateOne(
 			{ filter },
