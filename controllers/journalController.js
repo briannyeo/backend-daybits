@@ -40,7 +40,7 @@ router.get('/', (req, res) => {
 
 //* Create Route - this posts the data onto the journalEntry database
 router.post('/', async (req, res) => {
-	const filter = { username: req.session.user };
+	const filter = { username: 'Mike' };
 	const newEntry = req.body;
 
 	try {
@@ -74,47 +74,23 @@ router.post('/', async (req, res) => {
 router.delete('/:id', async (req, res) => {
 	//delete route needs to delete thorugh populate
 
-	// 	const filter = { username: req.session.user };
-	// 	const newEntry = req.body;
+	const filter = { username: req.session.user };
+	try {
+		console.log(req.params.id);
+		//first remove from the userData collection
+		await UserData.updateOne(
+			{ filter },
+			{
+				$pull: {
+					journals: ObjectId(req.params.id),
+				},
+			}
+		).then(() => JournalEntry.findByIdAndDelete(req.params.id)); // To remove from the Journals collection thereafter.
 
-	// try {
-
-	// 	const currentUser = await UserData.findOne(filter);
-
-	// 	const currentEntry = await JournalEntry.findById(req.params.id);
-
-	// 	//const newJournalEntry = new JournalEntry(newEntry);
-	// 	newJournalEntry.save();
-
-	// 	currentUser.journals.push(newJournalEntry);
-	// 	currentUser.save();
-
-	// 	res.status(200).send('success');
-	// } catch (error) {
-	// 	res.status(400).json({ error: error.message });
-	// }
-	//journals: { _id: req.params.id },
-
-	console.log(req.params.id);
-	console.log('user', req.session.user);
-	const deletedDAta = await UserData.updateOne(
-		{ username: req.session.user },
-		{
-			$pull: {
-				journals: ObjectId(req.params.id),
-			},
-		}
-	).exec();
-	console.log(deletedDAta);
-	res.status(200).json({ status: 'success' });
-
-	//ORIGINAL CODE
-	// try {
-	// 	const deletedJournal = await JournalEntry.findByIdAndRemove(req.params.id);
-	// 	res.status(200).send(deletedJournal);
-	// } catch (error) {
-	// 	res.status(400).json({ error: error.message });
-	// }
+		res.status(200).json({ status: 'success' });
+	} catch (error) {
+		res.status(400).json({ error: error.message });
+	}
 });
 
 //*Put route - EDIT (LIKES / COMMENTS) - DOES NOT WORK YET
