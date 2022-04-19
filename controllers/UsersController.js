@@ -23,7 +23,7 @@ users.get('/seedaccount', async (req, res) => {
 		console.log(error);
 	}
 });
-
+/////////////////////////REGISTER/////////////////////////
 //Index route. Receiving the data from the front-end when user registers.
 users.get('/', (req, res) => {
 	UserData.find()
@@ -51,19 +51,7 @@ users.post('/', async (req, res) => {
 	}
 });
 
-//get data from frontend - profile - FIND AND UPDATE (ADD EDIT ROUTE)
-// users.get('/profile', (req, res) => {
-// 	UserData.find()
-// 		.sort({ _id: -1 })
-// 		.limit(1) //find most recent addition
-// 		.then((userInfo) => {
-// 			res.json(userInfo);
-// 		})
-// 		.catch((err) => {
-// 			res.json(err);
-// 		});
-// });
-
+/////////////////////////PROFILE/////////////////////////
 //Find if userId user has habits created already or is a new user (no habits). Return accordingly.
 
 users.get('/profile', async (req, res) => {
@@ -92,18 +80,22 @@ users.post('/profile', async (req, res) => {
 	}
 });
 
-//To EDIT a profile (habit, habitstatus, goal, target)
+/////////////////////////PROGRESS/////////////////////////
+users.get('/progress', async (req, res) => {
+	console.log('get route PROGRESS', req.session.user);
 
-//SESSIONS
-// users.get('/progress', (req, res) => {
-// 	const user = req.session.user;
-// 	if (user) {
-// 		res.send(user);
-// 	} else {
-// 		res.send('no entry');
-// 	}
-// });
+	UserData.findOne({ username: req.session.user })
+		.populate('journals')
+		.select('-password')
+		.then((profile) => {
+			res.json(profile);
+		})
+		.catch((err) => {
+			res.json(err);
+		});
+});
 
+/////////////////////////LOGIN/////////////////////////
 //Autheticating to see if can login
 users.post('/home', async (req, res) => {
 	const { username, password } = req.body;
