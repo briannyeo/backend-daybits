@@ -25,17 +25,6 @@ router.get('/seedjournal', async (req, res) => {
 
 //* Index Route - get data from JournalEntry model
 router.get('/', (req, res) => {
-	// console.log('journal GET route', req.session.user);
-
-	// JournalEntry.findOne({ _id: req.session.id })
-	// 	.populate('author', 'username')
-	// 	.exec(function (err, journal) {
-	// 		if (err) {
-	// 			return err;
-	// 		}
-	// 		console.log('the user is', journal.author.username);
-	// 	});
-
 	UserData.find()
 		.populate('journals')
 		.select('-password')
@@ -84,6 +73,18 @@ router.post('/', async (req, res) => {
 
 //* Delete Route
 router.delete('/:id', async (req, res) => {
+	//delete route needs to delete thorugh populate
+	// UserData.findOne({ username: req.session.user })
+	// 	.populate('journals')
+	// 	.select('-password')
+	// 	.then((profile) => {
+	// 		res.json(profile);
+	// 	})
+	// 	.catch((err) => {
+	// 		res.json(err);
+	// 	});
+
+	//ORIGINAL CODE
 	try {
 		const deletedJournal = await JournalEntry.findByIdAndRemove(req.params.id);
 		res.status(200).send(deletedJournal);
