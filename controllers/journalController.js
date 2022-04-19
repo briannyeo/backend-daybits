@@ -1,7 +1,9 @@
 const express = require('express');
+const mongoose = require('mongoose');
 
 const JournalEntry = require('../models/JournalEntry.js');
 const UserData = require('../models/UserData.js');
+const ObjectId = mongoose.Types.ObjectId;
 
 const router = express.Router();
 
@@ -97,6 +99,25 @@ router.post('/', async (req, res) => {
 // 	.catch((err) =>, async (req, res) => {
 
 //delete route needs to delete thorugh popula
+//* Delete Route
+router.delete('/:id', async (req, res) => {
+	const filter = { username: req.session.user };
+	try {
+		//first remove from the userData collection
+		await UserData.updateOne(
+			{ filter },
+			{
+				$pull: {
+					journals: ObjectId(req.params.id),
+				},
+			}
+		).then(() => JournalEntry.findByIdAndDelete(req.params.id)); // To remove from the Journals collection thereafter.
+
+		res.status(200).json({ status: 'success' });
+	} catch (error) {
+		res.status(400).json({ error: error.message });
+	}
+});
 
 //*Put route - EDIT (LIKES / COMMENTS) - DOES NOT WORK YET
 // router.put('/:id', async (req, res) => {
