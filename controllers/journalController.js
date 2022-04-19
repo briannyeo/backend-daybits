@@ -36,11 +36,25 @@ router.get('/', (req, res) => {
 		});
 });
 
+//* Get Journal Route - get single journal from JournalEntry model for Journal Details Page
+
+router.get('/:id', (req, res) => {
+	//console.log(req.params.id);
+	JournalEntry.findById(req.params.id)
+		.then((journalDetails) => {
+			//console.log(journalDetails);
+			res.json(journalDetails);
+		})
+		.catch((err) => {
+			res.json(err);
+		});
+});
+
 //* Create Route - this posts the data onto the journalEntry database
 router.post('/', async (req, res) => {
 	//req.session.user = user.username;
 	//console.log('journal POST route', req.session.id);
-	console.log('body', req.body);
+	//console.log('body', req.body);
 	const filter = { username: req.session.user };
 	const newEntry = req.body;
 
@@ -71,27 +85,18 @@ router.post('/', async (req, res) => {
 	// }
 });
 
-//* Delete Route
-router.delete('/:id', async (req, res) => {
-	//delete route needs to delete thorugh populate
-	// UserData.findOne({ username: req.session.user })
-	// 	.populate('journals')
-	// 	.select('-password')
-	// 	.then((profile) => {
-	// 		res.json(profile);
-	// 	})
-	// 	.catch((err) => {
-	// 		res.json(err);
-	// 	});
+//Delete Route
+// router.delete('/:id', async (req, res) => {
+// delete route needs to delete thorugh populate
+// UserData.findOne({ username: req.session.user })
+// 	.populate('journals')
+// 	.select('-password')
+// 	.then((profile) => {
+// 		res.json(profile);
+// 	})
+// 	.catch((err) =>, async (req, res) => {
 
-	//ORIGINAL CODE
-	try {
-		const deletedJournal = await JournalEntry.findByIdAndRemove(req.params.id);
-		res.status(200).send(deletedJournal);
-	} catch (error) {
-		res.status(400).json({ error: error.message });
-	}
-});
+//delete route needs to delete thorugh popula
 
 //*Put route - EDIT (LIKES / COMMENTS) - DOES NOT WORK YET
 // router.put('/:id', async (req, res) => {
@@ -108,9 +113,5 @@ router.delete('/:id', async (req, res) => {
 // 				UserData.community.likes = 2;
 // 			});
 // 	} catch (error) {
-// 		console.log(error);
-// 	}
-// 	res.send('success');
-// });
 
 module.exports = router;

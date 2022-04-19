@@ -5,7 +5,8 @@ const cors = require('cors');
 const mongoose = require('mongoose');
 const journalController = require('./controllers/journalController.js');
 const usersController = require('./controllers/UsersController.js');
-//const userDataController = require('./controllers/UserDataController');
+const CommentsController = require('./controllers/CommentsController.js');
+
 const session = require('express-session');
 
 const app = express();
@@ -63,6 +64,7 @@ app.use(express.json());
 //****************ROUTES***************//
 app.use('/daybits/journal', journalController);
 app.use('/daybits/register', usersController);
+app.use('/daybits/comments', CommentsController);
 
 app.get('/', (req, res) => {
 	res.send('Hi 2');
