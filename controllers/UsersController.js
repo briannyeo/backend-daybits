@@ -81,9 +81,10 @@ users.post('/profile', async (req, res) => {
 });
 
 /////////////////////////PROGRESS/////////////////////////
-users.get('/progress', async (req, res) => {
-	console.log('get route PROGRESS', req.session.user);
 
+users.get('/progress', (req, res) => {
+	//CHANGE username to req.session.user
+	//console.log('getrouteprogress', req.session.user);
 	UserData.findOne({ username: req.session.user })
 		.populate('journals')
 		.select('-password')

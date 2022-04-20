@@ -58,17 +58,18 @@ router.post('/', async (req, res) => {
 	//console.log('journal POST route', req.session.id);
 	//console.log('body', req.body);
 	const filter = { username: req.session.user };
-	const newEntry = req.body;
-
+	console.log('newjournalentry', req.body);
+	console.log('user', req.session.user);
 	try {
 		// const createdJournal = await UserData.findOneAndUpdate(filter, {
 		// 	$push: { journals: [newEntry] },
 		// });
 
 		const currentUser = await UserData.findOne(filter);
-
-		const newJournalEntry = new JournalEntry(newEntry);
-		newJournalEntry.save();
+		console.log('after TRY', req.body);
+		const newJournalEntry = await JournalEntry.create(req.body);
+		console.log(newJournalEntry);
+		//newJournalEntry.save();
 
 		currentUser.journals.push(newJournalEntry);
 		currentUser.save();
