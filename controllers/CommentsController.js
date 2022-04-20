@@ -5,7 +5,7 @@ const router = express.Router();
 
 // * Create Route - this posts the comments into the comments database
 router.post('/', async (req, res) => {
-	console.log(req.session.user);
+	//console.log(req.session.user);
 	//const user = req.session.user;
 	console.log('body:', req.body);
 
@@ -21,6 +21,18 @@ router.post('/', async (req, res) => {
 	} catch (error) {
 		console.log(error);
 	}
+});
+
+// * Get Route - this gets all the comments of a particular journal entry from the comments database
+router.get('/:id', (req, res) => {
+	console.log('this is journalId', req.params.id);
+	Comments.find({ journalId: `${req.params.id}` })
+		.then((comments) => {
+			res.json(comments);
+		})
+		.catch((err) => {
+			res.json(err);
+		});
 });
 
 module.exports = router;

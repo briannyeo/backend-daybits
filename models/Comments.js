@@ -2,7 +2,7 @@ const mongoose = require('mongoose');
 
 const commentSchema = mongoose.Schema({
 	comment: { type: String },
-	createdAt: { type: Date },
+	dateCommented: { type: String },
 	author: { type: String }, // req.session.user(usernam??)
 	journalId: { type: String },
 });
