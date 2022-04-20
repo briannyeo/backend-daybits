@@ -4,7 +4,7 @@ const { Schema } = mongoose;
 const journalEntrySchema = mongoose.Schema({
 	title: { type: String },
 	journalBody: { type: String },
-	dailyGoalAchieved: [{ type: Boolean }],
+	dailyGoalAchieved: { type: Boolean },
 	createdAt: { type: Date },
 	//comments: [Comments],
 	// likes: [{ type: Schema.Types.ObjectId, ref: 'UserData' }],
