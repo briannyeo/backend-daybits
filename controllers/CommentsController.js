@@ -3,38 +3,36 @@ const Comments = require('../models/Comments.js');
 
 const router = express.Router();
 
-// * Create Route - this posts the data onto the comments database
+// * Create Route - this posts the comments into the comments database
 router.post('/', async (req, res) => {
-	console.log(req.session.user);
-	const user = req.session.user;
-	console.log('body', req.body);
+	//console.log(req.session.user);
+	//const user = req.session.user;
+	console.log('body:', req.body);
 
-	//const array = [{ author: user, comment: req.body }];
-	//const array1 = JSON.stringify(array);
+	req.body.author = req.session.user;
+	console.log('new object is this', req.body);
 
 	try {
-		const newComment = await Comments.create({
-			comment: JSON.stringify(req.body),
-			author: JSON.stringify(user),
-		});
+		const newComment = await Comments.create(req.body);
+		await newComment.save();
 		res.status(200).send(newComment);
-		console.log(newComment);
+		console.log('this is a new comment: ', newComment);
 		//mongoose.connection.close(); //close the connection so that the program will end
 	} catch (error) {
 		console.log(error);
 	}
 });
 
-//const createdComment = await Comments.create(req.body);
-// const createdComment = new Comments({ author: user, comment: req.body })
-// createdComment.save();
-
-// Comments.insertMany(array)
-// 	.then(function (docs) {
-// 		res.json(docs);
-// 	})
-// 	.catch(function (err) {
-// 		res.status(400).json({ error: err.message });
-// 	});
+// * Get Route - this gets all the comments of a particular journal entry from the comments database
+router.get('/:id', (req, res) => {
+	console.log('this is journalId', req.params.id);
+	Comments.find({ journalId: `${req.params.id}` })
+		.then((comments) => {
+			res.json(comments);
+		})
+		.catch((err) => {
+			res.json(err);
+		});
+});
 
 module.exports = router;
