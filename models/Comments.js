@@ -4,6 +4,7 @@ const commentSchema = mongoose.Schema({
 	comment: { type: String },
 	createdAt: { type: Date },
 	author: { type: String }, // req.session.user(usernam??)
+	journalId: { type: String },
 });
 
 const Comments = mongoose.model('Comments', commentSchema);
