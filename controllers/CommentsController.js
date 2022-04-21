@@ -35,4 +35,15 @@ router.get('/:id', (req, res) => {
 		});
 });
 
+//* Get Route - this gets all comments from all journals from the comments database (for counting in comms journal)
+router.get('/', (req, res) => {
+	Comments.find()
+		.then((comments) => {
+			res.json(comments);
+		})
+		.catch((err) => {
+			res.json(err);
+		});
+});
+
 module.exports = router;

@@ -1,6 +1,6 @@
 const express = require('express');
 const mongoose = require('mongoose');
-
+//const Comments = require('../models/Comments');
 const JournalEntry = require('../models/JournalEntry.js');
 const UserData = require('../models/UserData.js');
 const ObjectId = mongoose.Types.ObjectId;
@@ -25,6 +25,23 @@ router.get('/seedjournal', async (req, res) => {
 	res.json(journal);
 });
 
+//* Index Route - get data from JournalEntry model. TRYING OUT DEEP POPULATE.
+// router.get('/', (req, res) => {
+// 	UserData.find()
+// 		.populate({
+// 			path: 'journals',
+// 			model: JournalEntry,
+// 			populate: { model: Comments, path: 'comments' },
+// 		})
+// 		.select('-password')
+// 		.then((journalEntry) => {
+// 			res.json(journalEntry);
+// 		})
+// 		.catch((err) => {
+// 			res.json(err);
+// 		});
+// });
+
 //* Index Route - get data from JournalEntry model
 router.get('/', (req, res) => {
 	UserData.find()
@@ -39,7 +56,6 @@ router.get('/', (req, res) => {
 });
 
 //* Get Journal Route - get single journal from JournalEntry model for Journal Details Page
-
 router.get('/:id', (req, res) => {
 	//console.log(req.params.id);
 	JournalEntry.findById(req.params.id)
