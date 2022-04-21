@@ -80,6 +80,22 @@ users.post('/profile', async (req, res) => {
 	}
 });
 
+/////////////////////////PLANNER/////////////////////////
+
+users.get('/planner', (req, res) => {
+	//CHANGE username to req.session.user
+	//console.log('getrouteprogress', req.session.user);
+	UserData.findOne({ username: req.session.user })
+		.populate('journals')
+		.select('-password')
+		.then((planner) => {
+			res.json(planner);
+		})
+		.catch((err) => {
+			res.json(err);
+		});
+});
+
 /////////////////////////PROGRESS/////////////////////////
 
 users.get('/progress', (req, res) => {
