@@ -80,6 +80,22 @@ users.post('/profile', async (req, res) => {
 	}
 });
 
+/////////////////////////PLANNER/////////////////////////
+
+users.get('/planner', (req, res) => {
+	//CHANGE username to req.session.user
+	//console.log('getrouteprogress', req.session.user);
+	UserData.findOne({ username: req.session.user })
+		.select('-password')
+		.then((planner) => {
+			console.log(planner);
+			res.json(planner);
+		})
+		.catch((err) => {
+			res.json(err);
+		});
+});
+
 /////////////////////////PROGRESS/////////////////////////
 
 users.get('/progress', (req, res) => {
@@ -88,8 +104,9 @@ users.get('/progress', (req, res) => {
 	UserData.findOne({ username: req.session.user })
 		.populate('journals')
 		.select('-password')
-		.then((profile) => {
-			res.json(profile);
+		.then((progress) => {
+			console.log(progress);
+			res.json(progress);
 		})
 		.catch((err) => {
 			res.json(err);
