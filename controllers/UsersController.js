@@ -86,9 +86,11 @@ users.get('/planner', (req, res) => {
 	//CHANGE username to req.session.user
 	//console.log('getrouteprogress', req.session.user);
 	UserData.findOne({ username: req.session.user })
+
 		.populate('journals')
 		.select('-password')
 		.then((planner) => {
+
 			res.json(planner);
 		})
 		.catch((err) => {
@@ -104,8 +106,9 @@ users.get('/progress', (req, res) => {
 	UserData.findOne({ username: req.session.user })
 		.populate('journals')
 		.select('-password')
-		.then((profile) => {
-			res.json(profile);
+		.then((progress) => {
+			console.log(progress);
+			res.json(progress);
 		})
 		.catch((err) => {
 			res.json(err);
