@@ -90,7 +90,6 @@ users.get('/planner', (req, res) => {
 		.populate('journals')
 		.select('-password')
 		.then((planner) => {
-
 			res.json(planner);
 		})
 		.catch((err) => {
@@ -127,7 +126,7 @@ users.post('/home', async (req, res) => {
 	} else if (bcrypt.compareSync(password, user.password)) {
 		req.session.user = user.username;
 		req.session.userId = user._id;
-		console.log('from home', req.session);
+		//console.log('from home', req.session);
 
 		res.json({
 			status: 'success',

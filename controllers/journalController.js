@@ -55,6 +55,20 @@ router.get('/', (req, res) => {
 		});
 });
 
+//* Index Route for Account Page- get all journals for Single-User from JournalEntry model
+router.get('/account', (req, res) => {
+	console.log('req.session.user is', req.session.user);
+	UserData.findById(req.session.userId)
+		.populate('journals')
+		.select('-password')
+		.then((userEntries) => {
+			res.json(userEntries);
+		})
+		.catch((err) => {
+			res.json(err);
+		});
+});
+
 //* Get Journal Route - get single journal from JournalEntry model for Journal Details Page
 router.get('/:id', (req, res) => {
 	//console.log(req.params.id);
@@ -74,8 +88,8 @@ router.post('/', async (req, res) => {
 	//console.log('journal POST route', req.session.id);
 	//console.log('body', req.body);
 	const filter = { username: req.session.user };
-	console.log('newjournalentry', req.body);
-	console.log('user', req.session.user);
+	//console.log('newjournalentry', req.body);
+	//console.log('user', req.session.user);
 	try {
 		// const createdJournal = await UserData.findOneAndUpdate(filter, {
 		// 	$push: { journals: [newEntry] },
