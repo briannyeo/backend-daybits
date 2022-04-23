@@ -19,8 +19,8 @@ users.get('/seedaccount', async (req, res) => {
 			},
 		]);
 		res.send('Seed');
-	} catch (error) {
-		console.log(error);
+	} catch (err) {
+		res.json(err);
 	}
 });
 /////////////////////////REGISTER/////////////////////////
@@ -37,6 +37,8 @@ users.get('/', (req, res) => {
 
 //Adds new users accounts to MongoDB.
 users.post('/', async (req, res) => {
+	//const username = req.body.username
+
 	//overwrite the user password with the hashed password, then pass that in to our database
 	req.body.password = bcrypt.hashSync(
 		req.body.password,
@@ -45,9 +47,14 @@ users.post('/', async (req, res) => {
 	try {
 		const createdUser = await UserData.create(req.body);
 		console.log('created user is: ', createdUser);
-		res.redirect('/');
-	} catch (error) {
-		console.log(error);
+		if (createdUser) {
+			res.status(200).json({ status: 'success' });
+			return;
+		}
+		//res.redirect('/');
+	} catch (err) {
+		res.status(500).json({ status: 'failed' });
+		console.log(err);
 	}
 });
 
@@ -74,7 +81,8 @@ users.post('/profile', async (req, res) => {
 
 	try {
 		const createdProfile = await UserData.findOneAndUpdate(filter, update);
-		res.status(200).send(createdProfile);
+		console.log(createdProfile);
+		res.status(200).json({ status: 'success' });
 	} catch (error) {
 		res.status(400).json({ error: error.message });
 	}
@@ -90,7 +98,6 @@ users.get('/planner', (req, res) => {
 		.populate('journals')
 		.select('-password')
 		.then((planner) => {
-
 			res.json(planner);
 		})
 		.catch((err) => {
