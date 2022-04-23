@@ -2,8 +2,8 @@ const mongoose = require('mongoose');
 const { Schema } = mongoose;
 
 const userDataSchema = mongoose.Schema({
-	username: { type: String },
-	password: { type: String },
+	username: { type: String, required: true, unique: true },
+	password: { type: String, required: true },
 	habit: { type: String }, //type of habit
 	habitstatus: { type: String }, //break or build
 	goal: { type: String }, //e.g. run a marathon
