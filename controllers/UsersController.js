@@ -147,6 +147,19 @@ users.post('/home', async (req, res) => {
 	// res.send(user);
 	//* success or failure
 });
+/////////////////////////RETRIEVING PARTICULAR USER'S JOURNAL ENTRIES/////////////////////////
+users.get('/users/:id', (req, res) => {
+	console.log(req.params.id);
+	UserData.find({ username: req.params.id })
+		.populate('journals')
+		.then((userEntries) => {
+			console.log(userEntries);
+			res.json(userEntries);
+		})
+		.catch((err) => {
+			res.json(err);
+		});
+});
 
 users.post('/logout', (req, res) => {
 	req.session.destroy();
