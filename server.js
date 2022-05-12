@@ -52,10 +52,7 @@ app.use(
 app.use(
 	cors({
 		credentials: true,
-		origin: [
-			'http://localhost:3000',
-			'https://daybits-frontend.vercel.app/daybits',
-		],
+		origin: ['http://localhost:3000', 'https://daybits-frontend.vercel.app'],
 		methods: 'GET,HEAD,PUT,PATCH,POST,DELETE',
 	})
 );
